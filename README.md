@@ -1,8 +1,6 @@
 # external-sort-large-file
 Require: Jdk 8
 
-Build project
-
 - Build project
 
 `mvn clean compile`
