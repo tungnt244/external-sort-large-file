@@ -7,4 +7,6 @@ Require: Jdk 8
 
 - Run project
 
-`java -classpath {your generated class path} SortFile {input_file_path} {output_file_path}`
+`java -Xmx1G -classpath {your generated class path} SortFile {input_file_path} {output_file_path}`
+
+generally -Xmx1g or -Xmx1G set max jvm heap size to 1Gb - default jvm 8 takes 1/4 ram.
