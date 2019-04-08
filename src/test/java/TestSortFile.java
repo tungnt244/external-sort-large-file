@@ -46,7 +46,7 @@ public class TestSortFile {
     }
 
     private void testSortLargeFile(String inputFile, String outputFile, File largeExpectedFile) throws IOException {
-        SortFile.doIt(inputFile, outputFile, 524288);
+        SortFile.doIt(inputFile, outputFile);
 
         String line;
         List<String> outputArray = new ArrayList<>();
@@ -68,7 +68,7 @@ public class TestSortFile {
 
     @Test
     public void testMergeSortFile() throws IOException {
-        List<File> sortedFiles = SortFile.sortBatch(asciiFile, 524288);
+        List<File> sortedFiles = SortFile.sortBatch(asciiFile);
         List<BufferedReader> bufferedReaderList = SortFile.getListTempToRead(sortedFiles);
         List<CachedBufferedReader> cachedBufferedReaders = new ArrayList<>();
         for (BufferedReader bfReader : bufferedReaderList) {
@@ -98,27 +98,19 @@ public class TestSortFile {
 
     @Test
     public void testSortLargeFileToList() throws IOException {
-        List<File> resultFiles = SortFile.sortBatch(asciiFile, 524288); // 1mbfile with 512kb ram
+        List<File> resultFiles = SortFile.sortBatch(asciiFile); // 1mbfile with 512kb ram
         assertNotNull(resultFiles);
         for (File file : resultFiles) {
             assertTrue(file.exists());
         }
-        assertEquals(5, resultFiles.size());
+        assertEquals(1, resultFiles.size());
     }
 
     @Test
     public void testEstimateSize() {
         String expted = "âaâ";
         long length = DataSizeHelper.estimatedSizeOf(expted);
-        assertEquals(expted.getBytes().length + 64, length);
-    }
-
-    @Test
-    public void testGetMaxTmpFileSize() {
-        long fileSize = DataSizeHelper.getMaxTmpFileSize(512);
-        assertEquals(256, fileSize);
-        fileSize = DataSizeHelper.getMaxTmpFileSize(1025);
-        assertEquals(512, fileSize);
+        assertEquals(expted.length()*2 + 64, length);
     }
 
     @Test

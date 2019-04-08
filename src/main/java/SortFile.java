@@ -10,16 +10,16 @@ class SortFile {
 
     public static void main(String[] args) throws IOException {
         Date startDate = new Date();
+        System.out.println(startDate);
         String inputFileName = args[0];
         String outputFileName = args[1];
-        long maximumMemory = Long.valueOf(args[2]);
-        SortFile.doIt(inputFileName, outputFileName, maximumMemory);
+        SortFile.doIt(inputFileName, outputFileName);
         Date endDate = new Date();
         System.out.println((endDate.getTime() - startDate.getTime()) / 1000);
     }
 
-    static void doIt(String inputFile, String outputFile, long maximumMemory) throws IOException {
-        List<File> sortedFileList = sortBatch(new File(inputFile), maximumMemory);
+    static void doIt(String inputFile, String outputFile) throws IOException {
+        List<File> sortedFileList = sortBatch(new File(inputFile));
         List<CachedBufferedReader> cachedBufferedReaders = new ArrayList<>();
         for (BufferedReader br : getListTempToRead(sortedFileList)) {
             cachedBufferedReaders.add(new CachedBufferedReader(br));
@@ -68,10 +68,10 @@ class SortFile {
         return listBufferedReader;
     }
 
-    static List<File> sortBatch(File largeFile, long maxMemory) throws IOException {
+    static List<File> sortBatch(File largeFile) throws IOException {
 
         List<File> sortedFiles = new ArrayList<>();
-        long maxTmpFileSize = DataSizeHelper.getMaxTmpFileSize(maxMemory);
+        long maxTmpFileSize = DataSizeHelper.getMaxTmpFileSize();
         String line = "";
         List<String> unsortedListString = new ArrayList<>();
 
@@ -106,9 +106,8 @@ class SortFile {
                 fbwriter.newLine();
             }
             fbwriter.flush();
+            fbwriter.close();
             return tmpFile;
         }
     }
-
-
 }

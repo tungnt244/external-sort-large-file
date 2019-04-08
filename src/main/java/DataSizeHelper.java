@@ -5,11 +5,15 @@ class DataSizeHelper {
 
     private static int OBJ_OVERHEAD = STRING_HEADER + ARRAY_HEADER;
 
-    static long getMaxTmpFileSize(final long maxMemory) {
-        return maxMemory / 2;
+    static long getMaxTmpFileSize() {
+        System.gc();
+        Runtime r = Runtime.getRuntime();
+        long usedMem = r.totalMemory() - r.freeMemory();
+        long freeMem = r.maxMemory() - usedMem;
+        return freeMem/2;
     }
 
     static long estimatedSizeOf(String s) {
-        return s.getBytes().length + OBJ_OVERHEAD;
+        return s.length() * 2 + OBJ_OVERHEAD;
     }
 }
